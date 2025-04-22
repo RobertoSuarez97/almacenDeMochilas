@@ -1,0 +1,16 @@
+<div class="home-container">
+  <!-- Sección de Novedades -->
+  <section id="novedades" class="section hero-top">
+    <h2>Ofertas</h2>
+    <div class="product-grid">
+      <div class="product-card" *ngFor="let producto of productosOfertas">
+        <img [src]="'/assets/productos/'+producto.imagen_principal" alt="{{ producto.nombre }}" />
+        <h3>{{ producto.nombre }}</h3>
+        <p>{{ producto.descripcion }}</p>
+        <a [routerLink]="['/producto', producto.id]" class="btn-primary">Ver</a>
+      </div>
+    </div>
+  </section>
+
+
+</div>

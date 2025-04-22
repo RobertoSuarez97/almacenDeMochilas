@@ -1,0 +1,167 @@
+/* Contenedor principal */
+body{
+  background-color: #0056b3;
+}
+.contact-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 0;
+  background-color: #f9f9f9;
+  color: #333333;
+  height: 80vh; /* Altura de toda la pantalla */
+}
+
+/* Estructura con Grid */
+.contact-content {
+  display: flex;
+  flex-grow: 1;
+  height: 100%; /* Asegura que ocupe toda la altura disponible */
+}
+
+/* Sección del mapa */
+.map-container {
+  flex: 3; /* Ocupa 3/4 del espacio horizontal */
+  height: 100%; /* Igual a la altura del contenedor principal */
+}
+
+.animated-map {
+  position: relative;
+  width: 100%;
+  height: 100%; /* Ocupará toda la altura de su contenedor */
+  border: 2px solid #ddd;
+  border-radius: 10px 0 0 10px; /* Bordes redondeados para diferenciar el diseño */
+  overflow: hidden;
+  background: #ebcb93;
+}
+
+.map-image {
+  width: 100%;
+  height: 100%; /* La imagen ocupará todo el contenedor */
+  object-fit: cover;
+  transition: transform 0.3s ease-in-out;
+}
+
+.map-image:hover {
+  transform: scale(1.1);
+}
+
+.location-point {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background-color: #1A1A2E;
+  border: 3px solid white;
+  border-radius: 50%;
+  cursor: pointer;
+  animation: pulse 1.5s infinite;
+}
+
+.location-point:hover .tooltip {
+  display: block;
+}
+
+.tooltip {
+  position: absolute;
+  bottom: 30px;
+  left: -50px;
+  width: 120px;
+  padding: 10px;
+  background-color: #1a1a2e;
+  color: white;
+  border-radius: 5px;
+  font-size: 0.8rem;
+  text-align: center;
+  display: none;
+}
+
+/* Información de contacto basada en el diseño */
+.info-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+  padding: 20px;
+  border: 2px solid #ddd;
+  border-radius: 10px;
+  background-color: #c4c4c494;
+  color: #333333;
+  width: 100%;
+  max-width: 400px;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.info-icon {
+  font-size: 2rem;
+  color: #1a1a2e;
+}
+
+.info-text {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #333333;
+}
+
+.info-text span {
+  display: block;
+  font-size: 0.9rem;
+  color: #666666;
+}
+
+/* Redes sociales */
+.social-container {
+  margin-top: 20px;
+}
+
+.social-links {
+  display: flex;
+  justify-content: flex-start;
+  gap: 15px;
+}
+
+.social-links a {
+  font-size: 1.5rem;
+  color: white;
+  background-color: #1a1a2e;
+  padding: 10px;
+  border-radius: 50%;
+  transition: background-color 0.3s;
+}
+
+.social-links a:hover {
+  background-color: #0056b3;
+}
+
+
+/* Animaciones */
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .contact-content {
+    flex-direction: column;
+  }
+
+  .map-container, .info-container {
+    flex: none;
+    width: 100%;
+    height: 50vh; /* Ambas secciones ocupan la mitad de la altura en pantallas pequeñas */
+  }
+
+  .animated-map,
+  .info-container {
+    border-radius: 10px; /* Ajusta los bordes redondeados */
+  }
+}

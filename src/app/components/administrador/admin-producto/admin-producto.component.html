@@ -1,0 +1,175 @@
+    <div class="products-container">
+      <div class="header">
+        <h1>Gestión de Productos</h1>
+        <button (click)="openModal()" class="add-button">Agregar Producto</button>
+      </div>
+      <table class="products-table">
+        <thead>
+          <tr>
+            <th>Foto</th>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Cantidad</th>
+            <th>Descuento</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let product of products">
+            <td>
+              <img [src]="'/assets/productos/'+product.imagen_principal" alt="{{ product.nombre }}" class="product-image" />
+            </td>
+            <td>{{ product.nombre }}</td>
+            <td>{{ product.descripcion }}</td>
+            <td>{{ product.stock }}</td>
+            <td>{{ product.descuento }} %</td>
+            <td>
+              <button class="edit-button" (click)="openModalUpdate( product.id )">Editar</button>
+              <button class="delete-button" (click)="deleteProduct(product)">Eliminar</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+
+    <!-- Modal -->
+<div id="productModal" class="modal" [ngClass]="{'show': isModalOpen}">
+  <div class="modal-content">
+    <span class="close" (click)="closeModal()">&times;</span>
+    <h2>Agregar Producto</h2>
+    <form (ngSubmit)="addProduct()" #productForm="ngForm">
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="name">Nombre</label>
+          <input type="text" id="name" [(ngModel)]="product.name" name="name" required />
+        </div>
+        <div class="form-group">
+          <label for="price">Precio</label>
+          <input type="number" id="price" [(ngModel)]="product.price" name="price" required />
+        </div>
+        <div class="form-group">
+          <label for="description">Descripción</label>
+          <textarea id="description" [(ngModel)]="product.description" name="description" required></textarea>
+        </div>
+        <div class="form-group">
+          <label for="caracteristicas">Características</label>
+          <textarea id="caracteristicas" [(ngModel)]="product.caracteristicas" name="caracteristicas" required></textarea>
+        </div>
+        <div class="form-group">
+          <label for="quantity">Cantidad</label>
+          <input type="number" id="quantity" [(ngModel)]="product.quantity" name="quantity" required />
+        </div>
+        <div class="form-group">
+          <label for="brand">Marca</label>
+          <select id="brand" [(ngModel)]="product.brand" name="brand" required>
+            <option value="" disabled selected>Selecciona una marca</option>
+            <option *ngFor="let brand of marcas" [value]="brand.id">{{ brand.nombre }}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="discount">Descuento</label>
+          <input type="number" id="discount" [(ngModel)]="product.discount" name="discount" />
+        </div>
+        <div class="form-group">
+          <label for="photo">Fotografía</label>
+          <input type="file" id="photo" (change)="onFileSelected($event)" />
+        </div>
+        <div class="form-group">
+          <label for="gallery">Galería</label>
+          <input type="file" id="gallery" (change)="onMultipleFilesSelected($event)" accept="image/*" multiple />
+        </div>
+        <div class="form-check form-check-inline">
+          <label for="photo">Categorias</label>
+          <div *ngFor="let cat of categorias">
+            <input class="form-check-input" type="checkbox" id="inlineCheckbox1" (click)="checked(cat.id)" value="{{ cat.id }}">
+            <label class="form-check-label" for="inlineCheckbox1">{{ cat.nombre }}</label>
+          </div>
+      </div>
+      </div>
+      <button type="submit" class="submit-btn">Guardar</button>
+      <button type="button" (click)="closeModal()" class="submit-btn" style="background-color: red;">Cerrar</button>
+    </form>
+  </div>
+</div>
+
+<div id="productUpdateModal" class="modal" [ngClass]="{'show': isModalOpenUpdate}">
+  <div class="modal-content">
+    <span class="close" (click)="closeModal()">&times;</span>
+    <h2>Editar Producto</h2>
+    <form (ngSubmit)="editProduct(product.id)" #productForm="ngForm">
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="name">Nombre</label>
+          <input type="text" id="name" [(ngModel)]="product.name" name="name" required />
+        </div>
+        <div class="form-group">
+          <label for="price">Precio</label>
+          <input type="number" id="price" [(ngModel)]="product.price" name="price" required />
+        </div>
+        <div class="form-group">
+          <label for="description">Descripción</label>
+          <textarea id="description" [(ngModel)]="product.description" name="description" required></textarea>
+        </div>
+        <div class="form-group">
+          <label for="caracteristicas">Características</label>
+          <textarea id="caracteristicas" [(ngModel)]="product.caracteristicas" name="caracteristicas" required></textarea>
+        </div>
+        <div class="form-group">
+          <label for="quantity">Cantidad</label>
+          <input type="number" id="quantity" [(ngModel)]="product.quantity" name="quantity" required />
+        </div>
+        <div class="form-group">
+          <label for="brand">Marca</label>
+          <select id="brand" [(ngModel)]="product.brand" name="brand" required>
+            <option value="" disabled selected>Selecciona una marca</option>
+            <option *ngFor="let brand of marcas" [value]="brand.id">{{ brand.nombre }}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="discount">Descuento</label>
+          <input type="number" id="discount" [(ngModel)]="product.discount" name="discount" />
+        </div>
+        <div class="form-check form-check-inline">
+          <label for="photo">Categorias</label>
+          <br>
+          <div *ngFor="let cat of categorias">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              [checked]="selectedCategories.includes(cat.id)"
+              (change)="checked(cat.id)"
+              [value]="cat.id"
+            />
+            <label class="form-check-label">{{ cat.nombre }}</label>
+          </div>
+      </div>
+        <div class="form-group">
+          <label for="photo">Fotografía</label>
+          <input type="file" id="photo" (change)="onFileSelected($event)" />
+          <img *ngIf="!product.photoPreview" width="100px" height="auto" [src]="'/assets/productos/' + product.photo" class="preview-image" alt="Imagen principal" />
+          <img *ngIf="product.photoPreview"  width="100px" height="auto" [src]="product.photoPreview" class="preview-image" alt="Vista previa de imagen" />
+        </div>
+        <div class="form-group">
+          <label>Galería Actual</label>
+          <input type="file" id="galery" (change)="onMultipleFilesSelected($event)" accept="image/*" multiple/>
+          <div class="gallery-preview">
+            <div *ngFor="let img of product.galleryTemp; let i = index" class="gallery-item">
+              <img width="100px" height="auto" [src]="'/assets/productos/' + img['imagen']" class="preview-image" />
+              <button (click)="removeGalleryImage(i)">X</button>
+            </div>
+            <div *ngFor="let img of product.galleryPreview; let i = index" class="gallery-item">
+              <img width="100px" height="auto" [src]="img['imagen']" class="preview-image" />
+              <button (click)="removeGalleryImage(i)">X</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button type="submit" class="submit-btn">Guardar</button>
+      <button type="button" (click)="closeModal()" class="submit-btn" style="background-color: red;">Cerrar</button>
+    </form>
+  </div>
+</div>
+
+
+

@@ -1,0 +1,21 @@
+<div class="home-container">
+   <!-- Sección de Novedades -->
+   <section class="hero-secciones">
+    <div class="hero-content">
+      <h1>Productos</h1>
+    </div>
+  </section>
+  <!-- Sección de Novedades -->
+  <section *ngFor="let categoria of productos" id="{{ categoria.categoria_nombre }}" class="section hero-top">
+    <h2>{{ categoria.categoria_nombre }}</h2>
+    <div class="product-grid">
+      <div class="product-card" *ngFor="let producto of categoria.productos">
+        <img [src]="'/assets/productos/'+producto.imagen_principal" alt="{{ producto.nombre }}" />
+        <h3>{{ producto.producto_nombre }}</h3>
+        <p>{{ producto.producto_descripcion }}</p>
+        <a [routerLink]="['/producto', producto.producto_id]" class="btn-primary">Ver</a>
+      </div>
+    </div>
+  </section>
+
+</div>

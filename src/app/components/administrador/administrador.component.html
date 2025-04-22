@@ -1,0 +1,26 @@
+<section class="hero-secciones">
+  <div class="hero-content">
+    <h1>Administrador</h1>
+  </div>
+</section>
+<div class="adminCard">
+<aside class="sidebar">
+  <ul>
+    <li><a [routerLink]="['/administrador/productoAdmin']" class="active">
+      <span class="material-icons info-icon">manage_accounts</span><span class="text"> Productos</span>
+    </a></li>
+    <li><a [routerLink]="['/administrador']">
+      <span class="material-icons info-icon">manage_accounts</span><span class="text"> Apartados</span>
+    </a></li>
+    <li><a [routerLink]="['/administrador']" >
+      <span class="material-icons info-icon">manage_accounts</span><span class="text"> Ventas</span>
+    </a></li>
+    <li><a [routerLink]="['/administrador/marcaAdmin']" >
+      <span class="material-icons info-icon">manage_accounts</span><span class="text"> Marca</span>
+    </a></li>
+  </ul>
+</aside>
+</div>
+<div class="adminCard-body">
+<router-outlet></router-outlet>
+</div>

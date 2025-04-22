@@ -1,0 +1,13 @@
+<nav class="navbar">
+  <div class="logo">
+    <a href="#">Almacén de Mochilas</a>
+  </div>
+  <ul class="nav-links">
+    <li><a [routerLink]="['/home']">Inicio</a></li>
+    <li><a [routerLink]="['/productos']">Productos</a></li>
+    <li><a [routerLink]="['/contacto']">Contacto</a></li>
+    <li *ngIf="!validLogin()"><a [routerLink]="['/login']">Iniciar sesión</a></li>
+    <li *ngIf="validLogin()"><a [routerLink]="['/administrador']"><span class="material-icons info-icon">engineering</span></a></li>
+    <li *ngIf="validLogin()" style="cursor: pointer;"><a (click)="logout()"><span class="material-icons info-icon">logout</span></a></li>
+  </ul>
+</nav>

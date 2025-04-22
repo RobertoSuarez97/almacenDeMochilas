@@ -1,0 +1,43 @@
+/* Barra de navegación y Hero Section */
+
+.navbar {
+  position: fixed;
+  top: 0;
+  width: 95%;
+  background-color: #1a1a2e;
+  padding: 15px 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 1000;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.navbar .logo a {
+  color: #ffffff;
+  font-size: 2rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+}
+
+.nav-links li {
+  margin-left: 20px;
+}
+
+.nav-links li a {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 1.2rem;
+  padding: 10px 15px;
+  transition: background-color 0.3s ease;
+}
+
+.nav-links li a:hover {
+  background-color: #5f63f2;
+  border-radius: 5px;
+}

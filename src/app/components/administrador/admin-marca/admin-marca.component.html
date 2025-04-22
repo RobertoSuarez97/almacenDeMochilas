@@ -1,0 +1,62 @@
+<div class="products-container">
+  <div class="header">
+    <h1>Gestión de Marcas</h1>
+    <button (click)="openModal()" class="add-button">Agregar marca</button>
+  </div>
+  <table class="products-table">
+    <thead>
+      <tr>
+        <th>Descripción</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let marca of marcas">
+        <td>{{ marca.nombre }}</td>
+        <td>
+          <button class="edit-button" (click)="openModalUpdate( marca.id )">Editar</button>
+          <button class="delete-button" (click)="deleteMarca(marca)">Eliminar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+<!-- Modal -->
+<div id="productModal" class="modal" [ngClass]="{'show': isModalOpen}">
+<div class="modal-content">
+<span class="close" (click)="closeModal()">&times;</span>
+<h2>Agregar Marca</h2>
+<form (ngSubmit)="addMarca()" #productForm="ngForm">
+  <div class="form-grid">
+    <div class="form-group">
+      <label for="name">Nombre</label>
+      <input type="text" id="name" [(ngModel)]="marca.nombre" name="name" required />
+    </div>
+  </div>
+  <button type="submit" class="submit-btn">Guardar</button>
+  <button type="button" (click)="closeModal()" class="submit-btn" style="background-color: red;">Cerrar</button>
+</form>
+</div>
+</div>
+
+<div id="productUpdateModal" class="modal" [ngClass]="{'show': isModalOpenUpdate}">
+<div class="modal-content">
+<span class="close" (click)="closeModal()">&times;</span>
+<h2>Editar Producto</h2>
+<form (ngSubmit)="editMarca(marca.id)" #productForm="ngForm">
+  <div class="form-grid">
+    <div class="form-group">
+      <label for="name">Nombre</label>
+      <input type="text" id="name" [(ngModel)]="marca.nombre" name="name" required />
+    </div>
+  </div>
+  <button type="submit" class="submit-btn">Guardar</button>
+  <button type="button" (click)="closeModal()" class="submit-btn" style="background-color: red;">Cerrar</button>
+</form>
+</div>
+</div>
+
+
+
