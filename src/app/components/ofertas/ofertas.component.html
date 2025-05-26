@@ -7,7 +7,16 @@
         <img [src]="'/assets/productos/'+producto.imagen_principal" alt="{{ producto.nombre }}" />
         <h3>{{ producto.nombre }}</h3>
         <p>{{ producto.descripcion }}</p>
+        <div class="precio">
+          <span *ngIf="producto?.descuento && producto?.descuento > 0" class="precio-descuento">
+            ${{ calcularPrecioConDescuento(producto?.precio, producto?.descuento) }}
+          </span>
+          <span [class.precio-tachado]="producto?.descuento && producto?.descuento > 0">
+            ${{ producto?.precio }}
+          </span>
+        </div>
         <a [routerLink]="['/producto', producto.id]" class="btn-primary">Ver</a>
+        <a (click)="agregarAlCarrito(producto)" class="btn-secondary">Agregar al carrito</a>
       </div>
     </div>
   </section>

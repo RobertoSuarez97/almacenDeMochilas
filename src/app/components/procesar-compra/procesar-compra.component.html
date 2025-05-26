@@ -1,0 +1,179 @@
+<div class="procesar-pago-container">
+  <h1>Procesar Compra</h1>
+
+  <div *ngIf="carrito.length > 0 && !paymentInitiated">
+    <div class="resumen-pedido">
+      <h2>Resumen del Pedido</h2>
+      <div class="carrito-producto product-card" *ngFor="let producto of carrito">
+        <img [src]="'assets/productos/' + producto.imagen_principal" alt="{{ producto.nombre }}" />
+        <div class="carrito-detalle">
+          <h3>{{ producto.nombre }}</h3>
+          <div class="precio">
+            <span *ngIf="producto?.descuento && producto?.descuento > 0" class="precio-descuento">
+              ${{ calcularPrecioConDescuento(producto?.precio, producto?.descuento) }}
+            </span>
+            <span [class.precio-tachado]="producto?.descuento && producto?.descuento > 0">
+              ${{ producto?.precio }}
+            </span>
+          </div>
+          <p>Cantidad: {{ producto.cantidad }}</p>
+        </div>
+      </div>
+      <h3>Total: ${{ total.toFixed(2) }}</h3>
+    </div>
+
+    <form [formGroup]="checkoutForm" (ngSubmit)="procesarPagoMercadoLibre()">
+      <h2>Información de Envío</h2>
+      <div class="form-group">
+        <label for="calle">Calle *</label>
+        <input type="text" id="calle" formControlName="calle" class="form-control" required>
+        <div *ngIf="checkoutForm.controls['calle'].invalid && (checkoutForm.controls['calle'].dirty || checkoutForm.controls['calle'].touched)" class="error-message">
+          La calle es obligatoria.
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="numero">Número *</label>
+        <input type="text" id="numero" formControlName="numero" class="form-control" required>
+        <div *ngIf="checkoutForm.controls['numero'].invalid && (checkoutForm.controls['numero'].dirty || checkoutForm.controls['numero'].touched)" class="error-message">
+          El número es obligatorio.
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="colonia">Colonia *</label>
+        <input type="text" id="colonia" formControlName="colonia" class="form-control" required>
+        <div *ngIf="checkoutForm.controls['colonia'].invalid && (checkoutForm.controls['colonia'].dirty || checkoutForm.controls['colonia'].touched)" class="error-message">
+          La colonia es obligatoria.
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="localidad">Localidad *</label>
+        <input type="text" id="localidad" formControlName="localidad" class="form-control" required>
+        <div *ngIf="checkoutForm.controls['localidad'].invalid && (checkoutForm.controls['localidad'].dirty || checkoutForm.controls['localidad'].touched)" class="error-message">
+          La localidad es obligatoria.
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="municipio">Municipio *</label>
+        <input type="text" id="municipio" formControlName="municipio" class="form-control" required>
+        <div *ngIf="checkoutForm.controls['municipio'].invalid && (checkoutForm.controls['municipio'].dirty || checkoutForm.controls['municipio'].touched)" class="error-message">
+          El municipio es obligatorio.
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="estado">Estado *</label>
+        <input type="text" id="estado" formControlName="estado" class="form-control" required>
+        <div *ngIf="checkoutForm.controls['estado'].invalid && (checkoutForm.controls['estado'].dirty || checkoutForm.controls['estado'].touched)" class="error-message">
+          El estado es obligatorio.
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="pais">País *</label>
+        <input type="text" id="pais" formControlName="pais" class="form-control" required>
+        <div *ngIf="checkoutForm.controls['pais'].invalid && (checkoutForm.controls['pais'].dirty || checkoutForm.controls['pais'].touched)" class="error-message">
+          El país es obligatorio.
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="telefono">Número de Teléfono *</label>
+        <input type="tel" id="telefono" formControlName="telefono" class="form-control" required pattern="[0-9]{10}">
+        <div *ngIf="checkoutForm.controls['telefono'].invalid && (checkoutForm.controls['telefono'].dirty || checkoutForm.controls['telefono'].touched)">
+          <div *ngIf="checkoutForm.controls['telefono'].errors?.['required']" class="error-message">
+            El número de teléfono es obligatorio.
+          </div>
+          <div *ngIf="checkoutForm.controls['telefono'].errors?.['pattern']" class="error-message">
+            El número de teléfono debe tener 10 dígitos.
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="comentario">Comentario de Pedido</label>
+        <textarea id="comentario" formControlName="comentario" class="form-control"></textarea>
+      </div>
+
+      <h2>Datos de Pago</h2>
+      <div class="form-group">
+        <label for="cardNumber">Número de Tarjeta *</label>
+        <input type="text" id="cardNumber" formControlName="cardNumber" class="form-control" required>
+        <div *ngIf="checkoutForm.controls['cardNumber'].invalid && (checkoutForm.controls['cardNumber'].dirty || checkoutForm.controls['cardNumber'].touched)" class="error-message">
+          Por favor, ingresa el número de tarjeta.
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="cardExpirationMonth">Mes de Expiración *</label>
+          <select id="cardExpirationMonth" formControlName="cardExpirationMonth" class="form-control" required>
+            <option value="">Mes</option>
+            <option *ngFor="let month of months" [value]="month">{{ month }}</option>
+          </select>
+          <div *ngIf="checkoutForm.controls['cardExpirationMonth'].invalid && (checkoutForm.controls['cardExpirationMonth'].dirty || checkoutForm.controls['cardExpirationMonth'].touched)" class="error-message">
+            Por favor, selecciona el mes.
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="cardExpirationYear">Año de Expiración *</label>
+          <select id="cardExpirationYear" formControlName="cardExpirationYear" class="form-control" required>
+            <option value="">Año</option>
+            <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+          </select>
+          <div *ngIf="checkoutForm.controls['cardExpirationYear'].invalid && (checkoutForm.controls['cardExpirationYear'].dirty || checkoutForm.controls['cardExpirationYear'].touched)" class="error-message">
+            Por favor, selecciona el año.
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="cardCVV">CVV *</label>
+        <input type="text" id="cardCVV" formControlName="cardCVV" class="form-control" required>
+        <div *ngIf="checkoutForm.controls['cardCVV'].invalid && (checkoutForm.controls['cardCVV'].dirty || checkoutForm.controls['cardCVV'].touched)" class="error-message">
+          Por favor, ingresa el CVV.
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="cardholderName">Nombre del Titular *</label>
+        <input type="text" id="cardholderName" formControlName="cardholderName" class="form-control" required>
+        <div *ngIf="checkoutForm.controls['cardholderName'].invalid && (checkoutForm.controls['cardholderName'].dirty || checkoutForm.controls['cardholderName'].touched)" class="error-message">
+          Por favor, ingresa el nombre del titular de la tarjeta.
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="cardholderEmail">Email del Titular *</label>
+        <input type="email" id="cardholderEmail" formControlName="cardholderEmail" class="form-control" required>
+        <div *ngIf="checkoutForm.controls['cardholderEmail'].invalid && (checkoutForm.controls['cardholderEmail'].dirty || checkoutForm.controls['cardholderEmail'].touched)" class="error-message">
+          Por favor, ingresa el email del titular.
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="identificationType">Tipo de Documento *</label>
+        <select id="identificationType" formControlName="identificationType" class="form-control" required>
+          <option value="">Tipo</option>
+          <option value="DNI">DNI</option>
+          <option value="CUIT">CUIT</option>
+          <option value="CUIL">CUIL</option>
+          </select>
+        <div *ngIf="checkoutForm.controls['identificationType'].invalid && (checkoutForm.controls['identificationType'].dirty || checkoutForm.controls['identificationType'].touched)" class="error-message">
+          Por favor, selecciona el tipo de documento.
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="identificationNumber">Número de Documento *</label>
+        <input type="text" id="identificationNumber" formControlName="identificationNumber" class="form-control" required>
+        <div *ngIf="checkoutForm.controls['identificationNumber'].invalid && (checkoutForm.controls['identificationNumber'].dirty || checkoutForm.controls['identificationNumber'].touched)" class="error-message">
+          Por favor, ingresa el número de documento.
+        </div>
+      </div>
+
+      <div class="botones-acciones">
+        <button type="submit" class="btn-primary" [disabled]="checkoutForm.invalid">Pagar</button>
+        <button type="button" class="btn-secondary" (click)="volverAlCarrito()">Volver al Carrito</button>
+      </div>
+    </form>
+  </div>
+
+  <div *ngIf="carrito.length === 0">
+    <h2>El carrito está vacío.</h2>
+    <button class="btn-primary" (click)="volverAlCarrito()">Volver al Carrito</button>
+  </div>
+
+  <div *ngIf="paymentInitiated" class="redirigiendo-pago">
+    <p>Redirigiendo a la página de pago seguro...</p>
+  </div>
+</div>

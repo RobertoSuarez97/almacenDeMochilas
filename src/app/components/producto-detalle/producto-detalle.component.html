@@ -1,1 +1,45 @@
-<p>producto-detalle works!</p>
+<div class="detalle-container">
+  <div class="detalle-imagen">
+    <img [src]="'assets/productos/' + imagenSeleccionada" alt="{{ producto?.nombre }}" class="imagen-grande"/>
+    <div class="galeria-thumbnails" *ngIf="galeria">
+      <img *ngFor="let img of galeria"
+           [src]="'assets/productos/' +img"
+           (click)="cambiarImagen(img)"
+           [class.selected]="img === imagenSeleccionada"
+           alt="Galería de {{ producto?.nombre }}">
+    </div>
+  </div>
+
+  <div class="detalle-info">
+    <h1>{{ producto?.nombre }}</h1>
+    <h2 *ngIf="producto?.marca">{{ producto?.marca }}</h2>
+    <p class="descripcion">{{ producto?.descripcion }}</p>
+
+    <div class="caracteristicas" *ngIf="producto?.caracteristicas">
+      <h3>Características:</h3>
+      <p>{{ producto?.caracteristicas }}</p>
+    </div>
+
+    <div class="precio">
+      <span *ngIf="producto?.descuento && producto?.descuento > 0" class="precio-descuento">
+        ${{ calcularPrecioConDescuento(producto?.precio, producto?.descuento) }}
+      </span>
+      <span [class.precio-tachado]="producto?.descuento && producto?.descuento > 0">
+        ${{ producto?.precio }}
+      </span>
+    </div>
+
+    <div class="stock" *ngIf="producto?.stock > 0; else sinStock">
+      ¡Disponible! ({{ producto?.stock }} en stock)
+    </div>
+    <ng-template #sinStock>
+      <div class="sin-stock">
+        Producto no disponible
+      </div>
+    </ng-template>
+
+    <button (click)="agregarAlCarrito(producto)" class="btn-primary">Agregar al carrito</button>
+  </div>
+</div>
+<!-- Sección de Ofertas -->
+<app-ofertas></app-ofertas>

@@ -14,6 +14,7 @@
         <h3>{{ producto.producto_nombre }}</h3>
         <p>{{ producto.producto_descripcion }}</p>
         <a [routerLink]="['/producto', producto.producto_id]" class="btn-primary">Ver</a>
+        <a (click)="agregarAlCarrito(producto)" class="btn-secondary">Agregar al carrito</a>
       </div>
     </div>
   </section>

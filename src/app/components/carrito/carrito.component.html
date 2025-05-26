@@ -1,1 +1,31 @@
-<p>carrito works!</p>
+<div class="carrito-container">
+  <div *ngIf="carrito.length > 0">
+  <div class="carrito-producto product-card" *ngFor="let producto of carrito">
+    <img [src]="'assets/productos/' + producto.imagen_principal" alt="{{ producto.nombre }}" />
+    <div class="carrito-detalle">
+        <h3>{{ producto.nombre }}</h3>
+        <div class="precio">
+            <span *ngIf="producto?.descuento && producto?.descuento > 0" class="precio-descuento">
+                ${{ calcularPrecioConDescuento(producto?.precio, producto?.descuento) }}
+            </span>
+            <span [class.precio-tachado]="producto?.descuento && producto?.descuento > 0">
+                ${{ producto?.precio }}
+            </span>
+        </div>
+        <p>Cantidad: {{ producto.cantidad }}</p>
+        <button (click)="eliminarProducto(producto.id)" class="btn-secondary">Eliminar</button>
+    </div>
+  </div>
+
+  <div class="carrito-total">
+    <h2>Total: ${{ calcularTotal() }}</h2>
+    <button (click)="procederPago()" class="btn-primary">Proceder al Pago</button>
+  </div>
+</div>
+<div *ngIf="carrito.length == 0">
+    <div class="carrito-vacio">
+        <h2>Tu carrito está vacío</h2>
+        <a [routerLink]="['/productos']" class="btn-primary">Ver Productos</a>
+    </div>
+  </div>
+</div>

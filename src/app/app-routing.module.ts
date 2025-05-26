@@ -12,12 +12,14 @@ import { OfertasComponent } from './components/ofertas/ofertas.component';
 import { AdminGuard } from './guards/admin.guard';
 import { AdminProductoComponent } from './components/administrador/admin-producto/admin-producto.component';
 import { AdminMarcaComponent } from './components/administrador/admin-marca/admin-marca.component';
+import { ProcesarCompraComponent } from './components/procesar-compra/procesar-compra.component';
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'home', component: HomeComponent },
   { path: 'productos', component: ProductosComponent },
   { path: 'producto/:id', component: ProductoDetalleComponent },
   { path: 'carrito', component: CarritoComponent },
+  { path: 'procesar-compra', component: ProcesarCompraComponent },
   { path: 'administrador', component: AdministradorComponent,
     children: [
       { path: 'productoAdmin', component: AdminProductoComponent },
