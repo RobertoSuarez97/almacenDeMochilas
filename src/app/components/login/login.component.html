@@ -4,14 +4,20 @@
     <form (submit)="onLogin()">
       <div class="form-group">
         <span class="material-icons">person</span>
-        <input type="text" placeholder="Usuario" [(ngModel)]="username" name="username" required />
+        <input type="text" placeholder="Usuario" [(ngModel)]="username" name="username" required [disabled]="isLoading" />
       </div>
       <div class="form-group">
         <span class="material-icons">lock</span>
-        <input type="password" placeholder="Contraseña" [(ngModel)]="password" name="password" required />
+        <input type="password" placeholder="Contraseña" [(ngModel)]="password" name="password" required [disabled]="isLoading" />
       </div>
-      <button type="submit">Ingresar</button>
-      <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
+      <button type="submit" [disabled]="isLoading">
+        <span *ngIf="!isLoading">Ingresar</span>
+        <span *ngIf="isLoading">
+          <span class="spinner"></span> Ingresando...
+        </span>
+      </button>
+      <!-- El mensaje de error ahora se maneja principalmente con SweetAlert, pero podemos dejar esto como fallback o para errores específicos del campo si es necesario -->
+      <p *ngIf="errorMessage && !isLoading" class="error-message">{{ errorMessage }}</p>
     </form>
   </div>
 </div>

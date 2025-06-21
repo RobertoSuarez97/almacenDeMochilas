@@ -5,18 +5,43 @@
       <h1>Productos</h1>
     </div>
   </section>
-  <!-- Sección de Novedades -->
-  <section *ngFor="let categoria of productos" id="{{ categoria.categoria_nombre }}" class="section hero-top">
-    <h2>{{ categoria.categoria_nombre }}</h2>
-    <div class="product-grid">
-      <div class="product-card" *ngFor="let producto of categoria.productos">
-        <img [src]="'/assets/productos/'+producto.imagen_principal" alt="{{ producto.nombre }}" />
-        <h3>{{ producto.producto_nombre }}</h3>
-        <p>{{ producto.producto_descripcion }}</p>
-        <a [routerLink]="['/producto', producto.producto_id]" class="btn-primary">Ver</a>
-        <a (click)="agregarAlCarrito(producto)" class="btn-secondary">Agregar al carrito</a>
+
+  <!-- Barra de Búsqueda -->
+  <div class="busqueda-container section hero-top">
+    <input
+      type="text"
+      placeholder="Buscar productos por nombre, descripción o marca..."
+      class="form-control"
+      [ngModel]="terminoBusqueda"
+      (ngModelChange)="onBusquedaChange($event)" />
+  </div>
+
+  <!-- Lista de Productos -->
+  <ng-container *ngIf="productosFiltrados && productosFiltrados.length > 0; else noResultados">
+    <section *ngFor="let categoria of productosFiltrados" id="{{ categoria.categoria_nombre }}" class="section hero-top">
+      <h2>{{ categoria.categoria_nombre }}</h2>
+      <div class="product-grid">
+        <div class="product-card" *ngFor="let producto of categoria.productos">
+          <img [src]="'/assets/productos/'+producto.imagen_principal" alt="{{ producto.producto_nombre }}" />
+          <h3>{{ producto.producto_nombre }}</h3>
+          <p>{{ producto.producto_descripcion }}</p>
+          <a [routerLink]="['/producto', producto.producto_id]" class="btn-primary">Ver</a>
+          <a (click)="agregarAlCarrito(producto)"
+             class="btn-secondary"
+             [class.disabled]="botonCarritoDeshabilitado[producto.producto_id]"
+             [attr.disabled]="botonCarritoDeshabilitado[producto.producto_id] || producto.stock <= 0 ? true : null">
+            <span *ngIf="producto.stock <= 0">Agotado</span>
+            <span *ngIf="producto.stock > 0">{{ textoBotonCarrito[producto.producto_id] || 'Agregar al carrito' }}</span>
+          </a>
+        </div>
       </div>
+    </section>
+  </ng-container>
+
+  <ng-template #noResultados>
+    <div class="section hero-top no-resultados">
+      <p>No se encontraron productos que coincidan con "{{ terminoBusqueda }}".</p>
     </div>
-  </section>
+  </ng-template>
 
 </div>

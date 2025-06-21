@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AutenticacionService } from 'src/app/services/autenticacion.service';
+import Swal from 'sweetalert2'; // Importar SweetAlert2
 
 @Component({
   selector: 'app-login',

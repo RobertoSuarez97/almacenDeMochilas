@@ -8,11 +8,9 @@ import { AdministradorComponent } from './components/administrador/administrador
 import { ContactoComponent } from './components/contacto/contacto.component';
 import { LoginComponent } from './components/login/login.component';
 import { NovedadesComponent } from './components/novedades/novedades.component';
-import { OfertasComponent } from './components/ofertas/ofertas.component';
 import { AdminGuard } from './guards/admin.guard';
-import { AdminProductoComponent } from './components/administrador/admin-producto/admin-producto.component';
-import { AdminMarcaComponent } from './components/administrador/admin-marca/admin-marca.component';
 import { ProcesarCompraComponent } from './components/procesar-compra/procesar-compra.component';
+
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'home', component: HomeComponent },
@@ -20,13 +18,11 @@ const routes: Routes = [
   { path: 'producto/:id', component: ProductoDetalleComponent },
   { path: 'carrito', component: CarritoComponent },
   { path: 'procesar-compra', component: ProcesarCompraComponent },
-  { path: 'administrador', component: AdministradorComponent,
-    children: [
-      { path: 'productoAdmin', component: AdminProductoComponent },
-      { path: 'marcaAdmin', component: AdminMarcaComponent },
-      { path: '**', redirectTo: 'productoAdmin', pathMatch: 'full' },
-    ],
-    canActivate: [AdminGuard] },
+  {
+    path: 'administrador',
+    loadChildren: () => import('./components/administrador/admin.module').then(m => m.AdminModule),
+    canActivate: [AdminGuard] // Aunque el guard también está en admin-routing, puede ser útil mantenerlo aquí para proteger la carga del módulo
+  },
   { path: 'contacto', component: ContactoComponent },
   { path: 'login', component: LoginComponent },
   { path: 'novedades', component: NovedadesComponent },

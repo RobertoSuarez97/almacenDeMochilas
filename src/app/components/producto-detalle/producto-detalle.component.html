@@ -38,7 +38,14 @@
       </div>
     </ng-template>
 
-    <button (click)="agregarAlCarrito(producto)" class="btn-primary">Agregar al carrito</button>
+    <button
+      (click)="agregarAlCarrito(producto)"
+      class="btn-primary"
+      [class.disabled]="botonCarritoDeshabilitado"
+      [disabled]="botonCarritoDeshabilitado || (producto && producto.stock <= 0)">
+      <span *ngIf="producto && producto.stock <= 0">Agotado</span>
+      <span *ngIf="producto && producto.stock > 0">{{ textoBotonCarrito }}</span>
+    </button>
   </div>
 </div>
 <!-- Sección de Ofertas -->

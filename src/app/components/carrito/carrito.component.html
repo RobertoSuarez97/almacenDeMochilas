@@ -12,17 +12,26 @@
                 ${{ producto?.precio }}
             </span>
         </div>
-        <p>Cantidad: {{ producto.cantidad }}</p>
-        <button (click)="eliminarProducto(producto.id)" class="btn-secondary">Eliminar</button>
+        <div class="cantidad-controls">
+          <button (click)="actualizarCantidad(producto.producto_id, -1)" class="btn-cantidad btn-secondary">-</button>
+          <span>{{ producto.cantidad }}</span>
+          <button (click)="actualizarCantidad(producto.producto_id, 1)" class="btn-cantidad btn-secondary">+</button>
+        </div>
+        <p>Subtotal: ${{ (calcularPrecioConDescuento(producto.precio, producto.descuento) * producto.cantidad).toFixed(2) }}</p>
+        <button (click)="eliminarProducto(producto.producto_id)" class="btn-danger">Eliminar</button>
     </div>
   </div>
 
+  <div class="carrito-acciones">
+    <button (click)="vaciarCarrito()" class="btn-danger">Vaciar Carrito</button>
+  </div>
+
   <div class="carrito-total">
-    <h2>Total: ${{ calcularTotal() }}</h2>
+    <h2>Total: ${{ calcularTotal().toFixed(2) }}</h2>
     <button (click)="procederPago()" class="btn-primary">Proceder al Pago</button>
   </div>
 </div>
-<div *ngIf="carrito.length == 0">
+<div *ngIf="!carrito || carrito.length === 0">
     <div class="carrito-vacio">
         <h2>Tu carrito está vacío</h2>
         <a [routerLink]="['/productos']" class="btn-primary">Ver Productos</a>

@@ -1,0 +1,50 @@
+.busqueda-container {
+  margin-bottom: 20px; /* Espacio debajo de la barra de búsqueda */
+  padding: 10px; /* Un poco de padding interno si es necesario */
+}
+
+.busqueda-container .form-control {
+  width: 100%; /* Asegura que el input ocupe todo el ancho disponible */
+  max-width: 600px; /* Un ancho máximo para que no sea demasiado grande en pantallas anchas */
+  margin: 0 auto; /* Centrar la barra de búsqueda */
+  padding: 12px 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+  box-sizing: border-box; /* Incluye padding y borde en el ancho/alto total */
+}
+
+.busqueda-container .form-control:focus {
+  outline: none;
+  border-color: #5f63f2; /* Coincide con el color de acento */
+  box-shadow: 0 0 5px rgba(95, 99, 242, 0.5);
+}
+
+.no-resultados {
+  text-align: center;
+  padding: 20px;
+  font-size: 1.1rem;
+  color: #555;
+}
+
+/* Estilos para asegurar que el hero-top no añada demasiado margen si es el contenedor de búsqueda */
+.section.hero-top.busqueda-container {
+    margin-top: 20px; /* Ajusta según sea necesario */
+}
+/* Para asegurar que el h2 dentro de product-grid no se vea afectado por estilos de .section h2 */
+.product-grid h2 {
+    /* Puedes resetear o definir estilos específicos si es necesario */
+    /* Por ejemplo, si .section h2 tiene un text-align: center y no lo quieres para este h2 */
+    font-size: 1.5rem; /* O el tamaño que prefieras para los títulos de producto */
+    text-align: left; /* O como lo necesites */
+    margin-bottom: 10px; /* Espacio antes de la descripción del producto */
+}
+
+/* Si los títulos de categoría están dentro de .section.hero-top */
+.section.hero-top > h2 {
+    color: #1A1A2E;
+    text-align: center; /* Asegurar que los títulos de categoría estén centrados */
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 20px; /* Espacio antes de la product-grid o mensaje de no-resultados */
+}

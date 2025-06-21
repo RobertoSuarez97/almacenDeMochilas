@@ -66,3 +66,27 @@ button:hover {
   font-size: 0.9rem;
   margin-top: 10px;
 }
+
+/* Estilos para el spinner */
+.spinner {
+  display: inline-block;
+  width: 1em; /* Ajusta el tamaño según sea necesario */
+  height: 1em; /* Ajusta el tamaño según sea necesario */
+  border: 2px solid rgba(255, 255, 255, 0.3); /* Color del borde del spinner */
+  border-radius: 50%;
+  border-top-color: #ffffff; /* Color de la parte animada del spinner */
+  animation: spin 1s ease-in-out infinite;
+  margin-right: 5px;
+  vertical-align: middle;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}

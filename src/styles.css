@@ -1,5 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
 /* You can add global styles to this file, and also import other style files */
 /* Hero Section */
+
+body {
+  font-family: 'Poppins', sans-serif;
+  margin: 0; /* Es buena práctica resetear el margen del body */
+  padding: 0; /* Es buena práctica resetear el padding del body */
+  background-color: #f4f7f6; /* Un color de fondo global muy sutil si es necesario */
+  color: #333; /* Color de texto por defecto */
+}
 
 .hero {
   background-color: #1a1a2e;
@@ -219,6 +229,27 @@ select:focus {
 
 .btn-secondary:hover {
   background-color: #b4b4b4;
+}
+
+.btn-danger {
+  background-color: #dc3545; /* Rojo Bootstrap Danger */
+  color: white;
+  padding: 12px 15px;
+  text-decoration: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  border: none; /* Quitar borde por defecto si lo hubiera */
+}
+
+.btn-danger:hover {
+  background-color: #c82333; /* Un rojo más oscuro para el hover */
+}
+
+.btn-secondary.disabled, .btn-primary.disabled, .btn-danger.disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
 }
 
 

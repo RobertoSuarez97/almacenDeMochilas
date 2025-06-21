@@ -1,0 +1,46 @@
+.cantidad-controls {
+  display: flex;
+  align-items: center;
+  margin: 10px 0;
+}
+
+.cantidad-controls span {
+  margin: 0 10px;
+  min-width: 20px;
+  text-align: center;
+}
+
+.btn-cantidad {
+  padding: 5px 10px;
+  font-size: 0.9rem;
+  min-width: 30px; /* Asegura que los botones + y - tengan el mismo tamaño */
+}
+
+.carrito-detalle p { /* Estilo para el subtotal */
+  margin-top: 5px;
+  font-weight: bold;
+}
+
+.carrito-acciones {
+  display: flex;
+  justify-content: flex-end; /* Alinea el botón de vaciar a la derecha */
+  margin-top: 15px;
+  margin-bottom: 15px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #eee; /* Separador visual */
+}
+
+/* Ajustes para asegurar que el botón Eliminar en la tarjeta no herede estilos de btn-secondary global si no se desea */
+.carrito-detalle button.btn-danger {
+  margin-top: 10px;
+}
+
+/* Responsive adjustments if needed */
+@media (max-width: 600px) {
+  .carrito-acciones {
+    justify-content: center; /* Centrar en móviles */
+  }
+  .cantidad-controls {
+    justify-content: center; /* Centrar controles de cantidad en móviles */
+  }
+}

@@ -12,26 +12,36 @@ export class ProductoDetalleComponent implements OnInit {
   galeria: string[] = [];
   imagenSeleccionada: string = '';
 
+  // Para manejar el estado del botón "Agregar al carrito"
+  textoBotonCarrito: string = 'Agregar al carrito';
+  botonCarritoDeshabilitado: boolean = false;
 
   constructor(private route: ActivatedRoute, private productoService: ProductosService) {}
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
-    this.obtenerProductoPorId(id);
-
+    if (id) { // Asegurarse de que id no sea null
+      this.obtenerProductoPorId(id);
+    } else {
+      console.error('ID del producto no encontrado en la ruta');
+      // Considerar redirigir o mostrar un mensaje de error
+    }
   }
 
-  obtenerProductoPorId(id: string | null) {
+  obtenerProductoPorId(id: string) { // id ya no es string | null
     this.productoService.getProducto(id).subscribe( res => {
       this.producto = res;
-      console.log(res);
-      this.imagenSeleccionada = this.producto.imagen_principal;
+      // console.log(res);
+      if (this.producto && this.producto.imagen_principal) {
+        this.imagenSeleccionada = this.producto.imagen_principal;
+      }
       this.obtenerGaleriaProducto(id);
+      // Resetear estado del botón por si se navega entre productos
+      this.textoBotonCarrito = 'Agregar al carrito';
+      this.botonCarritoDeshabilitado = false;
     }, err => {
-        console.log(err)
+        console.error('Error al obtener producto:', err);
     });
-
-
   }
 
   obtenerGaleriaProducto(id: string | null) {
@@ -68,18 +78,47 @@ export class ProductoDetalleComponent implements OnInit {
   }
 
   agregarAlCarrito(producto: any) {
-    let carrito = JSON.parse(localStorage.getItem('carrito') || '[]');
+    if (!producto || typeof producto.producto_id === 'undefined') {
+      console.error('Producto o ID de producto no definido:', producto);
+      Swal.fire('Error', 'No se pudo agregar el producto (ID no encontrado).', 'error');
+      return;
+    }
 
-    // Verificar si ya existe el producto
-    const productoExistente = carrito.find((p: any) => p.id === producto.id);
+    if (this.botonCarritoDeshabilitado) {
+      return; // Evitar múltiples clics rápidos
+    }
+
+    const productoId = producto.producto_id;
+    let carrito = JSON.parse(localStorage.getItem('carrito') || '[]');
+    const productoExistente = carrito.find((p: any) => p.producto_id === productoId);
 
     if (productoExistente) {
-      productoExistente.cantidad += 1; // Suma si ya existe
+      productoExistente.cantidad += 1;
     } else {
-      carrito.push({ ...producto, cantidad: 1 });
+      carrito.push({ ...producto, producto_id: productoId, cantidad: 1 });
     }
 
     localStorage.setItem('carrito', JSON.stringify(carrito));
-    Swal.fire('¡Producto agregado correctamente!', '', 'success');
+
+    this.textoBotonCarrito = 'Añadido ✓';
+    this.botonCarritoDeshabilitado = true;
+
+    Swal.fire({
+      title: '¡Producto agregado!',
+      icon: 'success',
+      toast: true,
+      position: 'top-end',
+      showConfirmButton: false,
+      timer: 2000,
+      timerProgressBar: true
+    });
+
+    setTimeout(() => {
+      // Solo resetear si el producto sigue siendo el mismo (por si el usuario navegó rápido)
+      if (this.producto && this.producto.producto_id === productoId) {
+        this.textoBotonCarrito = 'Agregar al carrito';
+        this.botonCarritoDeshabilitado = false;
+      }
+    }, 2000);
   }
 }
